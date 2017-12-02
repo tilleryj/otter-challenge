@@ -31,6 +31,9 @@ gem 'slim'
 
 # Use Unicorn as the app server
 # gem 'unicorn'
+gem 'thin'
+
+gem 'rest-client'
 
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development

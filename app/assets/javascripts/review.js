@@ -1,12 +1,11 @@
 $(function() {
   if($(".reviews-show").length == 0) return;
 
-  var accessToken = "eyJhbGciOiJIUzI1NiIsImtpZCI6Imp3dF9zeW1tZXRyaWNfa2V5In0.eyJjbGllbnRfaWQiOiI3SVRMNEtnSG5LQlBGQTY3U3E2UWxkRUtXdFRSbUJEViIsImV4cCI6MTUxMjI0ODg1MSwic2NvcGUiOlsiZGF0YTpyZWFkIiwiZGF0YTp3cml0ZSIsImJ1Y2tldDpjcmVhdGUiXSwiYXVkIjoiaHR0cHM6Ly9hdXRvZGVzay5jb20vYXVkL2p3dGV4cDYwIiwianRpIjoib3J0Q21RZk03V0g5QUxOV3dTNlFtQWx4S0IxWU13WHpTZzZuYTNXTDZHUUpEUjNscTJ3UG5MaWRsMW1mSUNJZiJ9.x7XAFLsbRYZrjOf2FFzkFq8eojjxKwdQk4_zp7KvwLE"
   var viewer2d;
   var viewer3d;
   var options = {
       env: 'AutodeskProduction',
-      accessToken: accessToken
+      accessToken: authToken
   };
   var documentId = 'urn:dXJuOmFkc2sub2JqZWN0czpvcy5vYmplY3Q6Zm9yZ2UtamF2YS1zYW1wbGUtYXBwLTdpdGw0a2dobmticGZhNjdzcTZxbGRla3d0dHJtYmR2L215LXNhbXBsdC5ydnQ';
   Autodesk.Viewing.Initializer(options, function onInitialized(){
