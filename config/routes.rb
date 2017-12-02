@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-  root "reviews#new"
+  root "projects#index"
 
   resources :reviews
   resources :sheets
