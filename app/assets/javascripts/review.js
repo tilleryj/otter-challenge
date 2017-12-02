@@ -20,7 +20,7 @@ $(function() {
   function onDocumentLoadSuccess(doc) {
       window.d = doc;
       // A document contains references to 3D and 2D viewables.
-      var viewables2d = Autodesk.Viewing.Document.getSubItemsWithProperties(doc.getRootItem(), {'type':'geometry'}, true);
+      var viewables2d = Autodesk.Viewing.Document.getSubItemsWithProperties(doc.getRootItem(), {'type':'geometry', 'role': '2d'}, true);
       var viewables3d = Autodesk.Viewing.Document.getSubItemsWithProperties(doc.getRootItem(), {'type':'geometry', 'role': '3d'}, true);
       if (viewables2d.length === 0 || viewables3d === 0) {
           console.error('Document contains no viewables.');
@@ -42,6 +42,19 @@ $(function() {
       viewer2d.start(svfUrl2d, modelOptions, onLoadModelSuccess, onLoadModelError);
       viewer3d = new Autodesk.Viewing.Private.GuiViewer3D(viewerDiv3d);
       viewer3d.start(svfUrl3d, modelOptions, onLoadModelSuccess, onLoadModelError);
+
+      console.log(viewables2d);
+      $.each(viewables2d, function(index, viewable) {
+          $('#SheetPane').append('<li><a href="#" data-viewable="'+ index +'" class="sheet-link">'+ viewable["name"] +'</a></li>');
+      });
+
+      $('.sheet-link').on('click', function(e) {
+        var sheetIdx = $(this).attr('data-viewable');
+        var newSvfUrl = doc.getViewablePath(viewables2d[sheetIdx]);
+        viewer2d.loadModel(newSvfUrl, modelOptions, onLoadModelSuccess, onLoadModelError);
+        console.log('jeuy')
+        e.preventDefault();
+      });
   }
 
   /**
