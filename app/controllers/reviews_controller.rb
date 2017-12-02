@@ -4,7 +4,7 @@ class ReviewsController < ApplicationController
   end
 
   def show
-    
+    @auth_token = AutodeskToken.get
   end
 
   def new
