@@ -9,7 +9,7 @@ $(function() {
   function launchViewer(urn) {
     var options = {
       env: 'AutodeskProduction',
-      accessToken: "eyJhbGciOiJIUzI1NiIsImtpZCI6Imp3dF9zeW1tZXRyaWNfa2V5In0.eyJjbGllbnRfaWQiOiI3SVRMNEtnSG5LQlBGQTY3U3E2UWxkRUtXdFRSbUJEViIsImV4cCI6MTUxMjI1NTQxNiwic2NvcGUiOlsiZGF0YTpyZWFkIiwiZGF0YTp3cml0ZSIsImJ1Y2tldDpjcmVhdGUiXSwiYXVkIjoiaHR0cHM6Ly9hdXRvZGVzay5jb20vYXVkL2p3dGV4cDYwIiwianRpIjoic28xSm8xS0JiMG55Sm0wRnlhMnlDVWdpZERub2VUd203ZUFDbHhuMGxONzZCQ09xY3N1QUFZQXEyRU1ES20xNSJ9.ha9gffOQY-Lvntcr-9R_bX-Wpl6CvI41lDwVGgfl-8Y"
+      accessToken: authToken
     };
     var documentId = urn;
     if (viewer == null) {

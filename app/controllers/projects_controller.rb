@@ -3,7 +3,8 @@ class ProjectsController < ApplicationController
   end
 
   def show
-    # @auth_token = AutodeskToken.get
+    @auth_token = AutodeskToken.get
+    @project = Project.find(params[:id])
   end
 
   def new

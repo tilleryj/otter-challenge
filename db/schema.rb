@@ -11,11 +11,19 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171202192159) do
+ActiveRecord::Schema.define(version: 20171202234259) do
 
-  create_table "reviews", force: :cascade do |t|
+  create_table "projects", force: :cascade do |t|
     t.string   "name"
     t.string   "google_drive_file_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "reviews", force: :cascade do |t|
+    t.string   "autodesk_urn"
+    t.string   "google_drive_revision_id"
+    t.integer  "project_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -24,15 +32,7 @@ ActiveRecord::Schema.define(version: 20171202192159) do
     t.string   "guid"
     t.integer  "status",           default: 0
     t.datetime "last_reviewed_at"
-    t.integer  "review_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
-  create_table "versions", force: :cascade do |t|
-    t.string   "autodesk_urn"
-    t.string   "google_drive_revision_id"
-    t.integer  "review_id"
+    t.integer  "project_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
