@@ -1,0 +1,83 @@
+= stylesheet_link_tag "https://developer.api.autodesk.com/modelderivative/v2/viewers/style.min.css"
+= javascript_include_tag "https://developer.api.autodesk.com/modelderivative/v2/viewers/three.min.js?v=v3.2.*"
+= javascript_include_tag "https://developer.api.autodesk.com/modelderivative/v2/viewers/viewer3D.min.js?v=v3.2.*"
+= javascript_include_tag "https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"
+
+css:
+  body {
+      margin: 0;
+  }
+  #MyViewerDiv {
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      background-color: #F0F8FF;
+  }
+
+javascript:
+  var accessToken = "eyJhbGciOiJIUzI1NiIsImtpZCI6Imp3dF9zeW1tZXRyaWNfa2V5In0.eyJjbGllbnRfaWQiOiI3SVRMNEtnSG5LQlBGQTY3U3E2UWxkRUtXdFRSbUJEViIsImV4cCI6MTUxMjI0NDU4OCwic2NvcGUiOlsiZGF0YTpyZWFkIiwiZGF0YTp3cml0ZSIsImJ1Y2tldDpjcmVhdGUiXSwiYXVkIjoiaHR0cHM6Ly9hdXRvZGVzay5jb20vYXVkL2p3dGV4cDYwIiwianRpIjoid2NzRGRvTG5wdmNhWXZuSGN1TEtJb09mNlZEOTV4V3o1RXJ0YkgxeTBURHg3R3Y1cExuZnhXTlNodkdnRUNMcyJ9.goAbX8YB-ITr1XNFAtBkHFVvD-1xJGAnMnQiT8XFzQ8"
+  var viewer;
+  var options = {
+      env: 'AutodeskProduction',
+      accessToken: accessToken
+  };
+  var documentId = 'urn:dXJuOmFkc2sub2JqZWN0czpvcy5vYmplY3Q6Zm9yZ2UtamF2YS1zYW1wbGUtYXBwLTdpdGw0a2dobmticGZhNjdzcTZxbGRla3d0dHJtYmR2L215LXNhbXBsdC5ydnQ';
+  Autodesk.Viewing.Initializer(options, function onInitialized(){
+      Autodesk.Viewing.Document.load(documentId, onDocumentLoadSuccess, onDocumentLoadFailure);
+  });
+
+  /**
+  * Autodesk.Viewing.Document.load() success callback.
+  * Proceeds with model initialization.
+  */
+  function onDocumentLoadSuccess(doc) {
+
+      // A document contains references to 3D and 2D viewables.
+      var viewables = Autodesk.Viewing.Document.getSubItemsWithProperties(doc.getRootItem(), {'type':'geometry'}, true);
+      if (viewables.length === 0) {
+          console.error('Document contains no viewables.');
+          return;
+      }
+
+      // Choose any of the avialble viewables
+      var initialViewable = viewables[0];
+      var svfUrl = doc.getViewablePath(initialViewable);
+      var modelOptions = {
+          sharedPropertyDbPath: doc.getPropertyDbPath()
+      };
+
+      var viewerDiv = document.getElementById('MyViewerDiv');
+      viewer = new Autodesk.Viewing.Private.GuiViewer3D(viewerDiv);
+      viewer.start(svfUrl, modelOptions, onLoadModelSuccess, onLoadModelError);
+  }
+
+  /**
+   * Autodesk.Viewing.Document.load() failuire callback.
+   */
+  function onDocumentLoadFailure(viewerErrorCode) {
+      console.error('onDocumentLoadFailure() - errorCode:' + viewerErrorCode);
+  }
+
+  /**
+   * viewer.loadModel() success callback.
+   * Invoked after the model's SVF has been initially loaded.
+   * It may trigger before any geometry has been downloaded and displayed on-screen.
+   */
+  function onLoadModelSuccess(model) {
+      console.log('onLoadModelSuccess()!');
+      console.log('Validate model loaded: ' + (viewer.model === model));
+      console.log(model);
+  }
+
+  /**
+   * viewer.loadModel() failure callback.
+   * Invoked when there's an error fetching the SVF file.
+   */
+  function onLoadModelError(viewerErrorCode) {
+      console.error('onLoadModelError() - errorCode:' + viewerErrorCode);
+  }
+
+
+h1 JKLSDJF
+
+#MyViewerDiv
