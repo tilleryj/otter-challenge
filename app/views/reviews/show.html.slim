@@ -39,7 +39,7 @@ javascript:
   * Proceeds with model initialization.
   */
   function onDocumentLoadSuccess(doc) {
-
+      window.d = doc;
       // A document contains references to 3D and 2D viewables.
       var viewables2d = Autodesk.Viewing.Document.getSubItemsWithProperties(doc.getRootItem(), {'type':'geometry'}, true);
       var viewables3d = Autodesk.Viewing.Document.getSubItemsWithProperties(doc.getRootItem(), {'type':'geometry', 'role': '3d'}, true);
