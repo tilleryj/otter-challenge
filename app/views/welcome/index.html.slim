@@ -7,16 +7,24 @@ css:
   body {
       margin: 0;
   }
-  #MyViewerDiv {
+  #Viewer2dDiv,
+  #Viewer3dDiv {
       width: 100%;
       height: 100%;
       margin: 0;
       background-color: #F0F8FF;
   }
+  #Viewer2dDiv {
+      margin-left: 50%;
+  }
+  .adsk-viewing-viewer {
+      width: 50% !important;
+  }
 
 javascript:
   var accessToken = "eyJhbGciOiJIUzI1NiIsImtpZCI6Imp3dF9zeW1tZXRyaWNfa2V5In0.eyJjbGllbnRfaWQiOiI3SVRMNEtnSG5LQlBGQTY3U3E2UWxkRUtXdFRSbUJEViIsImV4cCI6MTUxMjI0NDU4OCwic2NvcGUiOlsiZGF0YTpyZWFkIiwiZGF0YTp3cml0ZSIsImJ1Y2tldDpjcmVhdGUiXSwiYXVkIjoiaHR0cHM6Ly9hdXRvZGVzay5jb20vYXVkL2p3dGV4cDYwIiwianRpIjoid2NzRGRvTG5wdmNhWXZuSGN1TEtJb09mNlZEOTV4V3o1RXJ0YkgxeTBURHg3R3Y1cExuZnhXTlNodkdnRUNMcyJ9.goAbX8YB-ITr1XNFAtBkHFVvD-1xJGAnMnQiT8XFzQ8"
-  var viewer;
+  var viewer2d;
+  var viewer3d;
   var options = {
       env: 'AutodeskProduction',
       accessToken: accessToken
@@ -33,22 +41,28 @@ javascript:
   function onDocumentLoadSuccess(doc) {
 
       // A document contains references to 3D and 2D viewables.
-      var viewables = Autodesk.Viewing.Document.getSubItemsWithProperties(doc.getRootItem(), {'type':'geometry'}, true);
-      if (viewables.length === 0) {
+      var viewables2d = Autodesk.Viewing.Document.getSubItemsWithProperties(doc.getRootItem(), {'type':'geometry'}, true);
+      var viewables3d = Autodesk.Viewing.Document.getSubItemsWithProperties(doc.getRootItem(), {'type':'geometry', 'role': '3d'}, true);
+      if (viewables2d.length === 0 || viewables3d === 0) {
           console.error('Document contains no viewables.');
           return;
       }
 
       // Choose any of the avialble viewables
-      var initialViewable = viewables[0];
-      var svfUrl = doc.getViewablePath(initialViewable);
+      var initialViewable2d = viewables2d[0];
+      var initialViewable3d = viewables3d[0];
+      var svfUrl2d = doc.getViewablePath(initialViewable2d);
+      var svfUrl3d = doc.getViewablePath(initialViewable3d);
       var modelOptions = {
           sharedPropertyDbPath: doc.getPropertyDbPath()
       };
 
-      var viewerDiv = document.getElementById('MyViewerDiv');
-      viewer = new Autodesk.Viewing.Private.GuiViewer3D(viewerDiv);
-      viewer.start(svfUrl, modelOptions, onLoadModelSuccess, onLoadModelError);
+      var viewerDiv2d = document.getElementById('Viewer2dDiv');
+      var viewerDiv3d = document.getElementById('Viewer3dDiv');
+      viewer2d = new Autodesk.Viewing.Private.GuiViewer3D(viewerDiv2d);
+      viewer2d.start(svfUrl2d, modelOptions, onLoadModelSuccess, onLoadModelError);
+      viewer3d = new Autodesk.Viewing.Private.GuiViewer3D(viewerDiv3d);
+      viewer3d.start(svfUrl3d, modelOptions, onLoadModelSuccess, onLoadModelError);
   }
 
   /**
@@ -80,4 +94,5 @@ javascript:
 
 h1 JKLSDJF
 
-#MyViewerDiv
+#Viewer2dDiv
+#Viewer3dDiv
