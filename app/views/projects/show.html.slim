@@ -1,13 +1,65 @@
-= stylesheet_link_tag "https://developer.api.autodesk.com/modelderivative/v2/viewers/style.min.css"
+.container-fluid.mt-4
+  .row
+    .col
+      .card
+        .card-body
+          .row
+            .col
+              h5 Model Sheets
+            .col-auto
+              = link_to project_reviews_path(@project), method: :post do
+                i.fa.fa-plus.fa-lg>
+                | Start a new review
+          table.table
+            thead.thead-light
+              tr
+                th Name
+                th Last Reviewed
+                th # of Changes
+                th Status
+            tr
+              td Cover Sheets
+              td= 20.day.ago.to_formatted_s(:short)
+              td= 451
+              td.text-center
+                i.fa.fa-circle.text-danger
+            tr
+              td Floor Plans
+              td= 20.day.ago.to_formatted_s(:short)
+              td.text-muted= 0
+              td.text-center
+                i.fa.fa-circle.text-success
+            tr
+              td Partition Plans
+              td= 10.day.ago.to_formatted_s(:short)
+              td 15
+              td.text-center
+                i.fa.fa-circle.text-warning
 
-.container-fluid
-  .row.editor
+
     .col
-      #Viewer3dDiv
-    .col
-      #Viewer2dDiv
-    .col-auto
-      #SheetPane
+      - if @project.reviews.any?
+        .card
+          .card-body
+            h5 Review History
+            table.table
+              thead.thead-light
+                tr
+                  th Name
+                  th Date
+                  th Since
+                  th Author
+              - @project.reviews.each do |review|
+                  tr
+                    td Review
+                    td= review.created_at
+                    td= time_ago_in_words(review.created_at)
+                    td= Faker::Name.name
+
+      .card class=("mt-4" if @project.reviews.any?)
+        .card-body
+          h5 3D View - Architectural Model
+          #viewer style="height: 300px; background-color: gray;"
 
 javascript:
-  loadProject(#{raw @project.to_json}, #{raw @auth_token.to_json})
+  window.loadView("dXJuOmFkc2sub2JqZWN0czpvcy5vYmplY3Q6Zm9yZ2UtamF2YS1zYW1wbGUtYXBwLTdpdGw0a2dobmticGZhNjdzcTZxbGRla3d0dHJtYmR2L215LXNhbXBsdC5ydnQ", #{raw @auth_token.to_json}, "viewer")
