@@ -11,6 +11,12 @@ module OauthHelper
   #                              "drive-ruby-quickstart.yaml")
   SCOPE = Google::Apis::DriveV3::AUTH_DRIVE
 
+  # authorizer = Google::Auth::ServiceAccountCredentials.make_creds(
+  # json_key_io: File.open('/path/to/service_account_json_key.json'),
+  # scope: scope)
+
+  # authorizer.fetch_access_token!
+
   # Ensure valid credentials, either by restoring from the saved credentials
   # files or intitiating an OAuth2 authorization. If authorization is required,
   # the user's default browser will be launched to approve the request.
@@ -20,7 +26,7 @@ module OauthHelper
     # FileUtils.mkdir_p(File.dirname(CREDENTIALS_PATH))
 
     p client_id = Rails.application.secrets.client_id
-    token_store = Google::Auth::Stores::FileTokenStore.new(file: CREDENTIALS_PATH)
+    # token_store = Google::Auth::Stores::FileTokenStore.new(file: CREDENTIALS_PATH)
     authorizer = Google::Auth::UserAuthorizer.new(client_id, SCOPE, token_store)
 
     user_id = 'default'
