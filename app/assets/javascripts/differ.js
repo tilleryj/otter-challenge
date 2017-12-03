@@ -1,18 +1,13 @@
 function VersionChanges(viewer, options) {
   Autodesk.Viewing.Extension.call(this, viewer, options);
 }
-
 VersionChanges.prototype = Object.create(Autodesk.Viewing.Extension.prototype);
 VersionChanges.prototype.constructor = VersionChanges;
-
 VersionChanges.prototype.load = function () {
   var modelA = this.options.modelA;
   var modelB = this.options.modelB;
   var viewer = this.options.viewer;
-
-  var removed = {};
-  var added = {};
-  var modified = {};
+  var changes = this.options.changes
 
   var red = new THREE.Vector4(1, 0, 0, 1);
   var green = new THREE.Vector4(0, 0.5, 0, 1);
@@ -28,8 +23,7 @@ VersionChanges.prototype.load = function () {
       for (var extIdA in listA) {
         if (listB[extIdA] != null) continue;
         var dbIdA = listA[extIdA].dbId;
-        removed[extIdA] = dbIdA;
-        console.log('Removed dbId: ' + dbIdA);
+        changes.removed[extIdA] = dbIdA;
         viewer.impl.visibilityManager.show(dbIdA, modelA);
         viewer.setThemingColor(dbIdA, red, modelA);
       }
@@ -37,8 +31,7 @@ VersionChanges.prototype.load = function () {
       for (var extIdB in listB) {
         if (listA[extIdB] != null) continue;
         var dbIdB = listB[extIdB].dbId
-        added[extIdB] = dbIdB;
-        console.log('Added dbId: ' + dbIdB);
+        changes.added[extIdB] = dbIdB;
         viewer.impl.visibilityManager.show(dbIdB, modelB);
         viewer.setThemingColor(dbIdB, green, modelB);
       }
@@ -54,14 +47,11 @@ VersionChanges.prototype.load = function () {
           if (propsB[i] == null) continue;
           if (propsA[i].displayCategory.indexOf('__')==0) continue; // internal properties
           if (propsA[i].displayValue != propsB[i].displayValue) {
-            console.log('Property ' + dbId + ': ' + propsA[i].displayName + ' changed from '
-              + propsA[i].displayValue + ' to ' + propsB[i].displayValue);
-            modified[extId] = dbId;
+            changes.modified[extId] = dbId;
           }
         }
 
-        if (typeof modified[extId] != 'undefined') {
-          console.log('Modified dbId: ' + dbId);
+        if (typeof changes.modified[extId] != 'undefined') {
           // color on both models
           //viewer.impl.visibilityManager.show(dbId, modelA);
           //viewer.impl.visibilityManager.show(dbId, modelB);
@@ -121,9 +111,62 @@ VersionChanges.prototype.load = function () {
 
   return true;
 };
-
 VersionChanges.prototype.unload = function () {
   return true;
 };
-
 Autodesk.Viewing.theExtensionManager.registerExtension('Autodesk.Forge.Samples.VersionChanges', VersionChanges);
+
+
+
+function ColorizeChanges(viewer, options) {
+  Autodesk.Viewing.Extension.call(this, viewer, options);
+}
+ColorizeChanges.prototype = Object.create(Autodesk.Viewing.Extension.prototype);
+ColorizeChanges.prototype.constructor = ColorizeChanges;
+ColorizeChanges.prototype.load = function () {
+  var viewer = this.options.viewer;
+
+  var green = new THREE.Vector4(0, 0.5, 0, 1);
+  var orange = new THREE.Vector4(1, 0.6, 0.2, 1);
+
+  viewer.addEventListener(Autodesk.Viewing.OBJECT_TREE_CREATED_EVENT, function () {
+    var changes = viewer.changes;
+    var model = viewer.currentModel;
+
+    for (var extId in changes.added) {
+      var dbId = changes.added[extId];
+      if (dbId) {
+        viewer.impl.visibilityManager.show(dbId, model);
+        viewer.setThemingColor(dbId, green, model);
+      }
+    }
+    for (var extId in changes.modified) {
+      var dbId = changes.modified[extId];
+      if (dbId) {
+        viewer.impl.visibilityManager.show(dbId, model);
+        viewer.setThemingColor(dbId, orange, model);
+      }
+    }
+  });
+
+  return true;
+};
+ColorizeChanges.prototype.unload = function () {
+  return true;
+};
+Autodesk.Viewing.theExtensionManager.registerExtension('Autodesk.Forge.Samples.ColorizeChanges', ColorizeChanges);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
