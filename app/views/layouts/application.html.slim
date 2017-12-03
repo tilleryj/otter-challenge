@@ -9,9 +9,14 @@ html
   = csrf_meta_tags
 
   body class=body_class
-    nav.navbar.navbar-light.bg-light
-      .container
-        a.navbar-brand href=root_path
-          | Otter Challenge
+
+    nav.navbar.navbar-expand-lg.navbar-light.bg-light
+      a.navbar-brand href=root_path Review
+
+      .collapse.navbar-collapse
+        ul.navbar-nav.mr-auto
+          - if @project
+            li.nav-item.active
+              = link_to @project.name, @project, class: "nav-link"
 
     = yield

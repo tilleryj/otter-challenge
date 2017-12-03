@@ -1,70 +1,45 @@
-window.loadProject = function(project, authToken) {
-  var viewer, viewer2d;
+window.loadView = function(urn, authToken, viewerId) {
+  var viewer;
+  var options = {
+      env: 'AutodeskProduction',
+      accessToken: authToken
+  };
+  var documentId = urn;
+  Autodesk.Viewing.Initializer(options, function onInitialized(){
+      Autodesk.Viewing.Document.load(documentId, onDocumentLoadSuccess, onDocumentLoadFailure);
+  });
 
-  var modelsLoading = 0;
-  var models = [];
-  var latestDocument;;
-  function onDocumentLoad(doc, latest) {
-    modelsLoading++;
-    if (latest) { latestDocument = doc; }
+  /**
+  * Autodesk.Viewing.Document.load() success callback.
+  * Proceeds with model initialization.
+  */
+  function onDocumentLoadSuccess(doc) {
 
-    var viewables = Autodesk.Viewing.Document.getSubItemsWithProperties(doc.getRootItem(), {'type': 'geometry', 'role': '3d'}, true);
-    var svfUrl = doc.getViewablePath(viewables[0]);
-    var changes = {
-      added: {},
-      removed: {},
-      modified: {}
-    };
-    viewer.loadModel(svfUrl, { sharedPropertyDbPath: doc.getPropertyDbPath() }, function(model) {
-      models.push(model);
-      if (--modelsLoading > 0) { return; }
+      // A document contains references to 3D and 2D viewables.
+      var viewables = Autodesk.Viewing.Document.getSubItemsWithProperties(doc.getRootItem(), {'type':'geometry', 'role': '3d'}, true);
+      if (viewables.length === 0) {
+          console.error('Document contains no viewables.');
+          return;
+      }
 
-      viewer.loadExtension('Autodesk.Forge.Samples.VersionChanges', {
-        'modelA': models[0],
-        'modelB': models[1],
-        'viewer': viewer,
-        'changes': changes
-      });
-
-      var viewables2d = Autodesk.Viewing.Document.getSubItemsWithProperties(latestDocument.getRootItem(), {'type': 'geometry', 'role': '2d'}, true);
-      var svfUrl = latestDocument.getViewablePath(viewables2d[0]);
-      var modelOptions = { sharedPropertyDbPath: latestDocument.getPropertyDbPath() };
-
-      var highlightDiffs = function(model) {
-        viewer2d.currentModel = model;
-        viewer2d.changes = changes;
+      // Choose any of the avialble viewables
+      var initialViewable = viewables[0];
+      var svfUrl = doc.getViewablePath(initialViewable);
+      var modelOptions = {
+          sharedPropertyDbPath: doc.getPropertyDbPath()
       };
-      viewer2d.loadExtension('Autodesk.Forge.Samples.ColorizeChanges', {
-        'viewer': viewer2d
-      });
 
-      viewer2d.loadModel(svfUrl, modelOptions, highlightDiffs);
-
-      $.each(viewables2d, function(index, viewable) {
-          $('#SheetPane').append('<a href="#" data-viewable="'+ index +'" class="sheet-link">'+ viewable["name"] +'</a>');
-      });
-
-      $('.sheet-link').on('click', function(e) {
-        var sheetIdx = $(this).attr('data-viewable');
-        var newSvfUrl = latestDocument.getViewablePath(viewables2d[sheetIdx]);
-        viewer2d.impl.unloadCurrentModel();
-        viewer2d.loadModel(newSvfUrl, modelOptions, highlightDiffs);
-        e.preventDefault();
-      });
-    });
+      var viewerDiv = document.getElementById(viewerId);
+      viewer = new Autodesk.Viewing.Private.GuiViewer3D(viewerDiv);
+      viewer.start(svfUrl, modelOptions, onLoadModelSuccess, onLoadModelError);
   }
 
-  Autodesk.Viewing.Initializer({ env: 'AutodeskProduction', accessToken: authToken }, function onInitialized() {
-    viewer = new Autodesk.Viewing.Private.GuiViewer3D(document.getElementById('Viewer3dDiv'));
-    viewer.start();
-    viewer2d = new Autodesk.Viewing.Private.GuiViewer3D(document.getElementById('Viewer2dDiv'));
-    viewer2d.start();
+  function onDocumentLoadFailure(viewerErrorCode) {
+  }
 
-    Autodesk.Viewing.Document.load(project.versions[0].urn, function(doc) {
-      onDocumentLoad(doc, true);
-    });
-    if (project.versions.length > 1) {
-      Autodesk.Viewing.Document.load(project.versions[1].urn, onDocumentLoad);
-    }
-  });
+  function onLoadModelSuccess(model) {
+  }
+
+  function onLoadModelError(viewerErrorCode) {
+  }
 };

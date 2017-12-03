@@ -3,7 +3,12 @@ Rails.application.routes.draw do
 
   get '/auth/:provider/callback', to: 'sessions#create'
 
-  resources :projects
-  resources :reviews
-  resources :sheets
+  resources :projects do
+    resources :reviews
+    resources :sheets
+
+    member do
+      get :view3d
+    end
+  end
 end

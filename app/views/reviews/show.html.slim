@@ -1,0 +1,17 @@
+= stylesheet_link_tag "https://developer.api.autodesk.com/modelderivative/v2/viewers/style.min.css"
+
+.container-fluid
+  .row.editor
+    .col
+      #Viewer3dDiv
+    .col
+      #Viewer2dDiv
+    .col-auto
+      #SheetPane
+
+  .text-right.mt-4
+    = link_to "Reject", @project, class: "btn btn-danger mr-4"
+    = link_to "Approve", @project, class: "btn btn-success"
+
+javascript:
+  loadProject(#{raw @project.to_json}, #{raw @auth_token.to_json})
