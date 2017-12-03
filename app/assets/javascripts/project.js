@@ -1,10 +1,62 @@
-$(function() {
-  var modelA = "";
-  var modelB = "";
+window.loadProject = function(project, authToken) {
+  var viewer, viewer2d;
 
+  var modelsLoading = 0;
+  var latestDocument;;
+  function onDocumentLoad(doc, latest) {
+    modelsLoading++;
+    if (latest) { latestDocument = doc; }
+
+    var viewables = Autodesk.Viewing.Document.getSubItemsWithProperties(doc.getRootItem(), {'type': 'geometry', 'role': '3d'}, true);
+    var svfUrl = doc.getViewablePath(viewables[0]);
+    viewer.loadModel(svfUrl, { sharedPropertyDbPath: doc.getPropertyDbPath() }, function() {
+      if (--modelsLoading > 0) { return; }
+
+      var viewables2d = Autodesk.Viewing.Document.getSubItemsWithProperties(latestDocument.getRootItem(), {'type': 'geometry', 'role': '2d'}, true);
+      var svfUrl = latestDocument.getViewablePath(viewables2d[0]);
+      var modelOptions = { sharedPropertyDbPath: latestDocument.getPropertyDbPath() };
+
+      var highlightDiffs = function(model) {
+
+      };
+
+      viewer2d.loadModel(svfUrl, modelOptions, highlightDiffs);
+
+      $.each(viewables2d, function(index, viewable) {
+          $('#SheetPane').append('<li><a href="#" data-viewable="'+ index +'" class="sheet-link">'+ viewable["name"] +'</a></li>');
+      });
+
+      $('.sheet-link').on('click', function(e) {
+        var sheetIdx = $(this).attr('data-viewable');
+        var newSvfUrl = latestDocument.getViewablePath(viewables2d[sheetIdx]);
+        viewer2d.loadModel(newSvfUrl, modelOptions, highlightDiffs);
+        e.preventDefault();
+      });
+    });
+  }
+
+  Autodesk.Viewing.Initializer({ env: 'AutodeskProduction', accessToken: authToken }, function onInitialized() {
+    viewer = new Autodesk.Viewing.Private.GuiViewer3D(document.getElementById('Viewer3dDiv'));
+    viewer.start();
+    viewer2d = new Autodesk.Viewing.Private.GuiViewer3D(document.getElementById('Viewer2dDiv'));
+    viewer2d.start();
+
+    Autodesk.Viewing.Document.load(project.versions[0].urn, function(doc) {
+      onDocumentLoad(doc, true);
+    });
+    if (project.versions.length > 1) {
+      Autodesk.Viewing.Document.load(project.versions[1].urn, onDocumentLoad);
+    }
+  });
+};
+
+
+
+
+$(function() {
+  return;
   window.viewer = null;
   window.viewer2d = null;
-  var lmvDoc;
 
   function launchViewer(urn) {
     var options = {
@@ -117,7 +169,10 @@ $(function() {
    */
   function onLoadModelError(viewerErrorCode) {}
 
-  launchViewer('urn:dXJuOmFkc2sub2JqZWN0czpvcy5vYmplY3Q6Zm9yZ2UtamF2YS1zYW1wbGUtYXBwLTdpdGw0a2dobmticGZhNjdzcTZxbGRla3d0dHJtYmR2L215LXNhbXBsdC5ydnQ');
+  launchViewer("urn:dXJuOmFkc2sub2JqZWN0czpvcy5vYmplY3Q6Zm9yZ2UtamF2YS1zYW1wbGUtYXBwLTdpdGw0a2dobmticGZhNjdzcTZxbGRla3d0dHJtYmR2L215LXNhbXBsdC5ydnQ");
   launchViewer("urn:dXJuOmFkc2sub2JqZWN0czpvcy5vYmplY3Q6Zm9yZ2UtamF2YS1zYW1wbGUtYXBwLTdpdGw0a2dobmticGZhNjdzcTZxbGRla3d0dHJtYmR2L215LXNhbXBsZS1vbGQucnZ0");
 
 });
+
+
+

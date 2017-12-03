@@ -37,4 +37,4 @@ h1 Otter Challenge
   ul.sheets
 
 javascript:
-  window.authToken = #{raw @auth_token.to_json};
+  loadProject(#{raw @project.to_json}, #{raw @auth_token.to_json})
