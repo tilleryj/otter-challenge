@@ -1,40 +1,13 @@
+= stylesheet_link_tag "https://developer.api.autodesk.com/modelderivative/v2/viewers/style.min.css"
 
-
-css:
-  body {
-      margin: 0;
-  }
-  #Viewer2dDiv,
-  #Viewer3dDiv {
-      width: 100%;
-      height: 100%;
-      margin: 0;
-      background-color: #F0F8FF;
-      margin-left: 10px;
-  }
-  #Viewer2dDiv {
-      margin-left: 36%;
-  }
-
-  #SheetPane {
-      border: 1px solid black;
-      height: 50%;
-      width: 20%;
-      margin-left: 72%
-  }
-
-  .adsk-viewing-viewer {
-      width: 35% !important;
-      height: 50% !important;
-  }
-
-
-h1 Otter Challenge
-
-#Viewer2dDiv
-#Viewer3dDiv
-#SheetPane
-  ul.sheets
+.container-fluid
+  .row.editor
+    .col
+      #Viewer3dDiv
+    .col
+      #Viewer2dDiv
+    .col-auto
+      #SheetPane
 
 javascript:
   window.authToken = #{raw @auth_token.to_json};

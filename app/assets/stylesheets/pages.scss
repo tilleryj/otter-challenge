@@ -1,0 +1,21 @@
+.projects-show {
+  #Viewer2dDiv,
+  #Viewer3dDiv {
+      height: 400px;
+      background-color: #F0F8FF;
+  }
+
+  .editor {
+    background-color: #A9A9A9;
+    a {
+      display: block;
+      padding: 10px;
+      font-weight: 300;
+      color: white;
+
+      &:hover {
+        background-color: #919191;
+      }
+    }
+  }
+}

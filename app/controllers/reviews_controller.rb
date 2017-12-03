@@ -1,12 +1,9 @@
 class ReviewsController < ApplicationController
-  def index
+  before_action :load_review, only: [:show]
 
-  end
+  private
 
-  def show
-  end
-
-  def new
-
+  def load_review
+    @review = Review.find(params[:id])
   end
 end
