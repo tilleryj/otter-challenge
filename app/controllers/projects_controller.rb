@@ -10,6 +10,9 @@ class ProjectsController < ApplicationController
     @project = Project.find(params[:id])
   end
 
+  def new
+  end
+
   def create
     @project = Project.create(project_params)
     render 'uploading'
@@ -19,5 +22,6 @@ class ProjectsController < ApplicationController
 
   def project_params
     params.require(:project).permit(:name)
+  end
 
 end

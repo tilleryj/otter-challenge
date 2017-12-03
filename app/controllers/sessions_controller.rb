@@ -9,12 +9,14 @@ class SessionsController < ApplicationController
     )
 
     session[:id] = @credential.id
+    p "REQUEST AUTH ORIGIN !!!!!!!!!!!!!!!"
+    p request.env['omniauth.origin']
     redirect_to request.env['omniauth.origin'] || root_path
   end
 
   def destroy
-    sessions[:id] = nil
-    redirect_to root
+    session[:id] = nil
+    redirect_to root_path
   end
 
   protected
