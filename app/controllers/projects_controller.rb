@@ -1,4 +1,6 @@
 class ProjectsController < ApplicationController
+  include OauthHelper
+
   def index
     @projects = Project.all
   end
@@ -17,5 +19,5 @@ class ProjectsController < ApplicationController
 
   def project_params
     params.require(:project).permit(:name)
-  end
+
 end
