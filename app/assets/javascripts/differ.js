@@ -24,7 +24,11 @@ VersionChanges.prototype.load = function () {
         if (listB[extIdA] != null) continue;
         var dbIdA = listA[extIdA].dbId;
         changes.removed[extIdA] = dbIdA;
-        viewer.impl.visibilityManager.show(dbIdA, modelA);
+        try {
+          viewer.impl.visibilityManager.show(dbIdA, modelA);
+        } catch(e) {
+          // Oh well!
+        }
         viewer.setThemingColor(dbIdA, red, modelA);
       }
 
@@ -32,7 +36,11 @@ VersionChanges.prototype.load = function () {
         if (listA[extIdB] != null) continue;
         var dbIdB = listB[extIdB].dbId
         changes.added[extIdB] = dbIdB;
-        viewer.impl.visibilityManager.show(dbIdB, modelB);
+        try {
+          viewer.impl.visibilityManager.show(dbIdB, modelB);
+        } catch(e) {
+          // Oh well!
+        }
         viewer.setThemingColor(dbIdB, green, modelB);
       }
 
