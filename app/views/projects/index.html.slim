@@ -1,8 +1,19 @@
 .container
-  .card.mt-4
-    .card-body
+  .card.mt-4.w-50{style = "height:400px"}
+    .card-header
       h3.card-title Projects
-      p To start your review, start by selecting a tendering project
+    .card-body
+      p.card-text To start your review, start by selecting a tendering project
+      p
+        form.form-inline
+          input.form-control.mr-sm-2[type="search" placeholder="Project Name" aria-label="Search"]
+          button.btn.btn-outline-success.my-2.my-sm-0[type="submit"] Search
+      p
+        a.card-link[href="#"] 1370 Harrison West Road, SF
+      p
+        a.card-link[href="#"]  965 W Chicago Ave, Chicago
+      p
+        =link_to "Create", new_project_path, class: 'btn btn-primary'
 
       form
         .row
@@ -17,4 +28,5 @@
           = link_to review.name, review, data: { turbolinks: false }
       hr
 
-      = link_to "Create", new_project_path, class: "btn btn-primary"
+javascript:
+

@@ -1,4 +1,8 @@
 class ProjectsController < ApplicationController
+  def index
+    @projects = Project.all
+  end
+
   def show
     @auth_token = AutodeskToken.get
     @project = Project.find(params[:id])

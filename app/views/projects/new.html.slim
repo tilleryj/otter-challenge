@@ -1,6 +1,8 @@
 .container
+<<<<<<< 432c03660e8d43bf46cd7de31595fab2205e741c
   .card.mt-4
     .card-body
+<<<<<<< 942d3658386dfc33bb7ad1b44d577b5095ed38d7
       .text-center.google-button
         = link_to "#", class: "btn btn-primary " do
           i.fa.fa-google.fa-lg>
@@ -25,3 +27,95 @@ javascript:
       }, 2000);
     });
   });
+=======
+      .text-center
+        - if current_user
+          #result
+        - else
+          = link_to "/auth/google_oauth2", class: "btn btn-primary google-button" do
+            i.fa.fa-google.fa-lg>
+            | Select a file from Google Drive
+
+- if current_user
+  javascript:
+    // The Browser API key obtained from the Google API Console.
+    // Replace with your own Browser API key, or your own key.
+    var developerKey = 'AIzaSyCad2qxnCI2WFEzMoZC6h5ksnAqwTuO5Po';
+
+    // The Client ID obtained from the Google API Console. Replace with your own Client ID.
+    var clientId = "1076103330137-fq88m5jm1ib4t022b6q84o182r92ekcd.apps.googleusercontent.com";
+
+    // Replace with your own project number from console.developers.google.com.
+    // See "Project number" under "IAM & Admin" > "Settings"
+    var appId = "1076103330137";
+
+    // Scope to use to access user's Drive items.
+    var scope = ['https://www.googleapis.com/auth/drive'];
+
+    var pickerApiLoaded = false;
+    var oauthToken = "#{current_user.token}";
+
+    // Use the Google API Loader script to load the google.picker script.
+    function loadPicker() {
+      // gapi.load('auth', {'callback': onAuthApiLoad});
+      gapi.load('picker', {'callback': onPickerApiLoad});
+    }
+
+    function onAuthApiLoad() {
+      window.gapi.auth.authorize(
+          {
+            'client_id': clientId,
+            'scope': scope,
+            'immediate': false
+          },
+          handleAuthResult);
+    }
+
+    function onPickerApiLoad() {
+      pickerApiLoaded = true;
+      createPicker();
+    }
+
+    function handleAuthResult(authResult) {
+      if (authResult && !authResult.error) {
+        oauthToken = authResult.access_token;
+        createPicker();
+      }
+    }
+
+    // Create and render a Picker object for searching images.
+    function createPicker() {
+      if (pickerApiLoaded && oauthToken) {
+        var view = new google.picker.View(google.picker.ViewId.DOCS);
+        view.setMimeTypes("image/png,image/jpeg,image/jpg");
+        var picker = new google.picker.PickerBuilder()
+            .enableFeature(google.picker.Feature.NAV_HIDDEN)
+            .enableFeature(google.picker.Feature.MULTISELECT_ENABLED)
+            .setAppId(appId)
+            .setOAuthToken(oauthToken)
+            .addView(view)
+            .addView(new google.picker.DocsUploadView())
+            .setDeveloperKey(developerKey)
+            .setCallback(pickerCallback)
+            .build();
+         picker.setVisible(true);
+      }
+    }
+
+    // A simple callback implementation.
+    function pickerCallback(data) {
+      if (data.action == google.picker.Action.PICKED) {
+        var fileId = data.docs[0].id;
+        alert('The user selected: ' + fileId);
+      }
+    }
+
+script type="text/javascript" src="https://apis.google.com/js/api.js?onload=loadPicker"
+=======
+  .card.w-50{style = "height:400px"}
+    h3.card-header Files
+    .card-body
+
+
+>>>>>>> Create project redirects to new project path; must get list of files from drive
+>>>>>>> Create project redirects to new project path; must get list of files from drive
