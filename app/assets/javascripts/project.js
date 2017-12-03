@@ -20,9 +20,9 @@ window.loadProject = function(project, authToken) {
       if (--modelsLoading > 0) { return; }
 
       viewer.loadExtension('Autodesk.Forge.Samples.VersionChanges', {
-        'modelA': models[0], 
-        'modelB': models[1], 
-        'viewer': viewer, 
+        'modelA': models[0],
+        'modelB': models[1],
+        'viewer': viewer,
         'changes': changes
       });
 
@@ -41,7 +41,7 @@ window.loadProject = function(project, authToken) {
       viewer2d.loadModel(svfUrl, modelOptions, highlightDiffs);
 
       $.each(viewables2d, function(index, viewable) {
-          $('#SheetPane').append('<li><a href="#" data-viewable="'+ index +'" class="sheet-link">'+ viewable["name"] +'</a></li>');
+          $('#SheetPane').append('<a href="#" data-viewable="'+ index +'" class="sheet-link">'+ viewable["name"] +'</a>');
       });
 
       $('.sheet-link').on('click', function(e) {
