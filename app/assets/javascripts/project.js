@@ -126,7 +126,7 @@ $(function() {
     if(!window.loaded2d) {
       window.loaded2d = true;
       $.each(viewables, function(index, viewable) {
-          $('#SheetPane').append('<li><a href="#" data-viewable="'+ index +'" class="sheet-link">'+ viewable["name"] +'</a></li>');
+          $('#SheetPane').append('<a href="#" data-viewable="'+ index +'" class="sheet-link">'+ viewable["name"] +'</a>');
       });
 
       $('.sheet-link').on('click', function(e) {

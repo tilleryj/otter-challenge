@@ -1,19 +1,20 @@
 .container
-  .row
-    .col-sm-6
-      .card
-        h3.card-header Projects
-        .card-body
-          p To start your review, start by selecting a tendering project
-          p
-            form.form-inline
-              input.form-control.mr-sm-2[type="search" placeholder="Project Name" aria-label="Search"]
-              button.btn.btn-outline-success.my-2.my-sm-0[type="submit"] Search
-          p
-            a.card-link[href="#"] 1370 Harrison West Road, SF
-          p
-            a.card-link[href="#"]  965 W Chicago Ave, Chicago
-          p
-            a.btn.btn-primary[href="#"] Create
+  .card.mt-4
+    .card-body
+      h3.card-title Projects
+      p To start your review, start by selecting a tendering project
 
+      form
+        .row
+          .col
+            input.form-control.mr-sm-2[type="search" placeholder="Project Name" aria-label="Search"]
+          .col-auto
+            button.btn.btn-outline-success.my-2.my-sm-0[type="submit"] Search
+      - if Project.any?
+        hr
+      - Project.limit(10).each do |review|
+        p
+          = link_to review.name, review, data: { turbolinks: false }
+      hr
 
+      = link_to "Create", new_review_path, class: "btn btn-primary"

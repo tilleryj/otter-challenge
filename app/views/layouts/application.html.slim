@@ -1,0 +1,17 @@
+html
+  head
+  title Otter Challenge
+  = stylesheet_link_tag "https://fonts.googleapis.com/css?family=Open+Sans:300,400,700"
+  = stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track' => true
+  = javascript_include_tag "https://developer.api.autodesk.com/modelderivative/v2/viewers/three.min.js?v=v3.2.*"
+  = javascript_include_tag "https://developer.api.autodesk.com/modelderivative/v2/viewers/viewer3D.min.js?v=v3.2.*"
+  = javascript_include_tag 'application', 'data-turbolinks-track' => true
+  = csrf_meta_tags
+
+  body class=body_class
+    nav.navbar.navbar-light.bg-light
+      .container
+        a.navbar-brand href=root_path
+          | Otter Challenge
+
+    = yield
