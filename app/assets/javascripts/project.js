@@ -1,4 +1,5 @@
 window.loadProject = function(project, authToken) {
+  if($(".project-show").length == 0) return;
   var viewer, viewer2d;
 
   var modelsLoading = 0;
@@ -173,6 +174,3 @@ $(function() {
   launchViewer("urn:dXJuOmFkc2sub2JqZWN0czpvcy5vYmplY3Q6Zm9yZ2UtamF2YS1zYW1wbGUtYXBwLTdpdGw0a2dobmticGZhNjdzcTZxbGRla3d0dHJtYmR2L215LXNhbXBsZS1vbGQucnZ0");
 
 });
-
-
-
