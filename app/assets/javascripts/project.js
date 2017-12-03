@@ -1,5 +1,4 @@
 window.loadProject = function(project, authToken) {
-  if($(".project-show").length == 0) return;
   var viewer, viewer2d;
 
   var modelsLoading = 0;
