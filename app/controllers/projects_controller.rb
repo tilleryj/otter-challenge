@@ -6,7 +6,7 @@ class ProjectsController < ApplicationController
 
   def create
     @project = Project.create(project_params)
-    redirect_to project_path(@project)
+    render 'uploading'
   end
 
   private

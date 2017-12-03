@@ -1,0 +1,20 @@
+.container
+  h4.mt-4 Uploading to Forge
+  p This may take a minute
+
+  .progress
+    .progress-bar.progress-bar-striped.progress-bar-animated style="transition: width 1s;" data={ path: project_path(@project) }
+
+javascript:
+  var progress = 0;
+  setInterval(function() {
+    progress = progress + Math.floor(Math.random() * (25 - 15)) + 15;
+    progress = Math.min(progress, 100);
+    $(".progress-bar").css("width", progress.toString() + "%");
+
+    if(progress == 100) {
+      setTimeout(function() {
+        window.location = $(".progress-bar").data("path");
+      }, 500);
+    }
+  }, 1000)
