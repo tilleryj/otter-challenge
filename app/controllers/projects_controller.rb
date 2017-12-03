@@ -11,6 +11,7 @@ class ProjectsController < ApplicationController
   end
 
   def new
+    get_files
   end
 
   def create

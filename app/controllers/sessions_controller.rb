@@ -1,16 +1,15 @@
 class SessionsController < ApplicationController
   def create
     @credential = Credential.find_or_create_by(email: auth_hash['info']['email'])
+
     @credential.update(
       token:         auth_hash['credentials']['token'],
       refresh_token: auth_hash['credentials']['refresh_token'],
-      expires_at:    auth_hash['credentials']['expires_at'],
-      expires:       auth_hash['credentials']['expires']
+      expires_at:    Time.at(auth_hash['credentials']['expires_at']).to_datetime
     )
 
     session[:id] = @credential.id
-    p "REQUEST AUTH ORIGIN !!!!!!!!!!!!!!!"
-    p request.env['omniauth.origin']
+    request.env['omniauth.origin']
     redirect_to request.env['omniauth.origin'] || root_path
   end
 
