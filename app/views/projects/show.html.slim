@@ -59,7 +59,4 @@
       .card class=("mt-4" if @project.reviews.any?)
         .card-body
           h5 3D View - Architectural Model
-          #viewer style="height: 300px; background-color: gray;"
-
-javascript:
-  window.loadView("dXJuOmFkc2sub2JqZWN0czpvcy5vYmplY3Q6Zm9yZ2UtamF2YS1zYW1wbGUtYXBwLTdpdGw0a2dobmticGZhNjdzcTZxbGRla3d0dHJtYmR2L215LXNhbXBsdC5ydnQ", #{raw @auth_token.to_json}, "viewer")
+          iframe src=view3d_project_path(@project) style="height: 350px; width: 100%; background-color: gray; border: 0;"

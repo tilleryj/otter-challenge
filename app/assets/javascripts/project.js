@@ -4,7 +4,7 @@ window.loadView = function(urn, authToken, viewerId) {
       env: 'AutodeskProduction',
       accessToken: authToken
   };
-  var documentId = 'urn:' + urn;
+  var documentId = urn;
   Autodesk.Viewing.Initializer(options, function onInitialized(){
       Autodesk.Viewing.Document.load(documentId, onDocumentLoadSuccess, onDocumentLoadFailure);
   });

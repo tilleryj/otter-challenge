@@ -1,0 +1,12 @@
+html
+  head
+    = javascript_include_tag "https://developer.api.autodesk.com/modelderivative/v2/viewers/three.min.js?v=v3.2.*"
+    = javascript_include_tag "https://developer.api.autodesk.com/modelderivative/v2/viewers/viewer3D.min.js?v=v3.2.*"
+    = javascript_include_tag 'application', 'data-turbolinks-track' => true
+    = stylesheet_link_tag "https://developer.api.autodesk.com/modelderivative/v2/viewers/style.min.css"
+
+  body style="overflow: hidden;"
+    #viewer style="height: 350px; background-color: gray;"
+
+    javascript:
+      window.loadView(#{raw @project.as_json[:versions].last[:urn].to_json}, #{raw @auth_token.to_json}, "viewer")
