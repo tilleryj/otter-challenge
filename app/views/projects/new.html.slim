@@ -26,11 +26,11 @@
     var scope = ['https://www.googleapis.com/auth/drive'];
 
     var pickerApiLoaded = false;
-    var oauthToken = "#{current_user.token}";
+    var oauthToken;
 
     // Use the Google API Loader script to load the google.picker script.
     function loadPicker() {
-      // gapi.load('auth', {'callback': onAuthApiLoad});
+      gapi.load('auth', {'callback': onAuthApiLoad});
       gapi.load('picker', {'callback': onPickerApiLoad});
     }
 
