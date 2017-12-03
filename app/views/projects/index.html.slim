@@ -5,9 +5,17 @@
     .card-body
       p.card-text To start your review, start by selecting a tendering project
       p
-        form.form-inline
-          input.form-control.mr-sm-2[type="search" placeholder="Project Name" aria-label="Search"]
-          button.btn.btn-outline-success.my-2.my-sm-0[type="submit"] Search
+        form
+          .row
+            .col
+              input.form-control.mr-sm-2[type="search" placeholder="Project Name" aria-label="Search"]
+            .col-auto
+              button.btn.btn-outline-success.my-2.my-sm-0[type="submit"] Search
+        - if Project.any?
+          hr
+        - Project.limit(10).each do |review|
+          p
+            = link_to review.name, review, data: { turbolinks: false }
       p
         a.card-link[href="#"] 1370 Harrison West Road, SF
       p
@@ -15,18 +23,6 @@
       p
         =link_to "Create", new_project_path, class: 'btn btn-primary'
 
-      form
-        .row
-          .col
-            input.form-control.mr-sm-2[type="search" placeholder="Project Name" aria-label="Search"]
-          .col-auto
-            button.btn.btn-outline-success.my-2.my-sm-0[type="submit"] Search
-      - if Project.any?
-        hr
-      - Project.limit(10).each do |review|
-        p
-          = link_to review.name, review, data: { turbolinks: false }
-      hr
 
 javascript:
 
