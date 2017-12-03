@@ -11,7 +11,16 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171202234259) do
+ActiveRecord::Schema.define(version: 20171203013206) do
+
+  create_table "credentials", force: :cascade do |t|
+    t.string   "email"
+    t.string   "provider"
+    t.string   "token"
+    t.string   "refresh_token"
+    t.datetime "expires_at"
+    t.boolean  "expires"
+  end
 
   create_table "projects", force: :cascade do |t|
     t.string   "name"
