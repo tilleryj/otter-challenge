@@ -40,6 +40,9 @@ window.loadProject = function(project, authToken) {
 
       viewer2d.loadModel(svfUrl, modelOptions, highlightDiffs);
 
+      viewables2d.sort(function(a, b) {
+        return a["name"] < b["name"] ? -1 : 1;
+      });
       $.each(viewables2d, function(index, viewable) {
           $('#SheetPane').append('<a href="#" data-viewable="'+ index +'" class="sheet-link">'+ viewable["name"] +'</a>');
       });
